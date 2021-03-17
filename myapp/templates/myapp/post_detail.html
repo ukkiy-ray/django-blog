@@ -1,0 +1,92 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<main class="container" style="padding: 30px 0;">
+  <br>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="card mb-3 shadow-4-strong">
+        {% if object.thumbnail %}
+        <img
+          src="{{ object.thumbnail.url }}"
+          class="card-img-top"
+          alt="{{ object.title }}"
+        />
+        {% else %}
+        <img
+          src="https://mdbootstrap.com/img/new/slides/041.jpg"
+          class="card-img-top"
+          alt="..."
+        />
+        {% endif %}
+        <div class="card-body">
+          <h4 class="card-title">{{ object.title }}</h4>
+          <p style="color: gray;"># {{ object.category }}</p>
+          <p class="card-text">
+            {{ object.content | safe | linebreaksbr | urlize }}
+          </p>
+          <hr>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+
+            <p class="card-text" style="margin-bottom: 0;">
+              <small class="text-muted">{{ object.created_at }}</small>
+              <br>
+              <small class="text-muted">by {{ object.author }}</small>
+              <br>
+              <a
+                href="javascript:void(0);" 
+                onclick="window.history.back();" 
+                class="btn btn-outline-info btn-rounded"
+                style="margin-top: 10px;"
+              >戻る</a>
+            </p>
+
+            <div class="button-group" style="margin-right: 30px;">
+              <a
+               class="btn btn-floating" 
+               href="{% url 'myapp:like_add' object.pk %}"
+               style="margin-right: 15px; background-color: #ff6699; color: white; font-size: 16px;"
+              >
+                <i class="fas fa-heart"></i>
+              </a>
+
+              {% if object.author == request.user %}
+                <a href="{% url 'myapp:post_update' object.pk %}" type="button" class="btn btn-dark btn-rounded" style="margin-right: 15px;">
+                  Update
+                </a>
+
+                <a href="{% url 'myapp:post_delete' object.id %}" type="button" class="btn btn-danger btn-rounded">
+                  Delete
+                </a>
+              {% endif %}
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card shadow-4-strong">
+        <div class="card-body">
+          <h5 class="card-title" style="color: #2e3f66;">{{ object.category }}</h5>
+          <p>このカテゴリーの他の記事</p>
+        </div>
+        <ul class="list-group">
+          {% for item in category_posts %}
+            <li class="list-group-item">
+              <a href="{% url 'myapp:post_detail' item.id %}" style="text-decoration: none; color: #333;">
+              {{ item.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+</main>
+  
+{% endblock %}

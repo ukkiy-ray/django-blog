@@ -1,0 +1,37 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<main class="container" style="padding: 30px 0;">
+  <div class="row">
+    <div class="col-md-9">
+      <br>
+      <h2>検索結果 一覧</h2>
+      <br>
+      
+      <table class="table table-hover table-bordered shadow-2-strong">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Created_at</th>
+            <th scope="col">Updated_at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in search_list %}
+            <tr>
+              <td><a href="{% url 'myapp:post_detail' item.pk %}">{{ item.title }}</a></td>
+              <td>{{ item.content }}</td>
+              <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
+            </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</main>
+  
+{% endblock %}

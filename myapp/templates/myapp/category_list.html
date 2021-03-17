@@ -1,0 +1,44 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<main class="container" style="padding: 30px 0;">
+  <div class="row">
+    <div class="col-md-9">
+      <br>
+      <h2>Category List</h2>
+      <br>
+    </div>
+  </div>
+
+
+  <div class="row">
+    {% for category in category_list %}
+
+      <div class="col-md-4">
+        <br>
+
+        <div class="card shadow-2-strong">
+          <div class="card-body">
+            <h3 class="card-title" style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid #999; padding-bottom: 8px;">
+              <a href="{% url 'myapp:category_detail' category.name_en %}" style="text-decoration: none; color: #333;">
+                {{ category.name }}
+              </a>
+              <span style="font-size: 16px; color: gray;">{{category.post_count}}件の記事</span>
+            </h3>
+            {% for post in category.post_set.all|slice:":5" %}
+              <p><a href="{% url 'myapp:post_detail' post.id %}" style="text-decoration: none; color: #29478b;">・{{ post.title }}</a></p>
+            {% endfor %}
+            <br>
+            <a href="{% url 'myapp:category_detail' category.name_en %}" style="text-decoration: none; color: #29478b;">
+              このカテゴリーの記事を全て見る
+            </a>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+  </div>
+  <br>
+</main>
+  
+{% endblock %}

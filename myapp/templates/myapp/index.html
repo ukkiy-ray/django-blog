@@ -1,0 +1,70 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="p-5 text-center bg-image"
+    style=" background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/041.jpg'); height: 400px;">
+  <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="text-white">
+        <h1 class="mb-3">生きているって、素晴らしい。</h1>
+        <h4 class="mb-3">{{ request.site.siteconfig.top_subtitle }}</h4>
+        <a class="btn btn-outline-light btn-lg" href="{% url 'myapp:post_create' %}" role="button">
+          <i class="fas fa-plus"></i>
+          Getting Started!
+        </a>
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="container" style="padding: 30px 0;">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for item in post_list %}
+    <div class="col">
+      <div class="card h-100 shadow-2-strong">
+
+        {% if item.thumbnail %}
+          <img
+            src="{{ item.thumbnail.url }}"
+            class="card-img-top"
+            alt="{{ item.title }}"
+          />
+        {% else %}
+          <img
+            src="https://mdbootstrap.com/img/new/standard/city/044.jpg"
+            class="card-img-top"
+            alt="..."
+          />
+        {% endif %}
+
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h5 class="card-title">
+              {{ item.title }}
+            </h5>
+            <small>by {{ item.author }}</small>
+          </div>
+        
+          <p style="color: gray;"># {{ item.category }}</p>
+          <p class="card-text">
+            {{ item.content | safe | truncatechars_html:50 }}
+          </p>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted">{{ item.created_at }}</small>
+            <a href="{% url 'myapp:post_detail' item.id %}" type="button" class="btn btn-outline-info" data-mdb-ripple-color="dark">
+              もっと読む
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+  </div>
+</main>
+{% endblock %}
